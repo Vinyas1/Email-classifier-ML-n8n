@@ -1,0 +1,1027 @@
+{
+  "name": "copy_new",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/predict/",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{$json[\"snippet\"]}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        192
+      ],
+      "id": "be53c0d5-cf8b-48e0-b3d3-ad8da777a8ac",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d6c2a636-6b64-4ef2-ad27-4a4cf3e93f0d",
+                    "leftValue": "={{$json[\"category\"]}}",
+                    "rightValue": "network",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0dcf18c4-790a-4ddf-a833-4f006a8cd554",
+                    "leftValue": "={{$json[\"category\"]}}",
+                    "rightValue": "hardware",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eaf27271-6654-4625-9a49-10d64f5e546f",
+                    "leftValue": "={{$json[\"category\"]}}",
+                    "rightValue": "software",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ad14c795-c834-4376-abfe-19c8519b6982",
+                    "leftValue": "={{$json[\"category\"]}}",
+                    "rightValue": "access",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        816,
+        96
+      ],
+      "id": "c30b4cc2-f8f9-4090-bfd9-5abeb829b222",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "MAIL1@gmail.com", 
+        "subject": "New complaint received:",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#0f172a; font-family:Segoe UI, Arial, sans-serif;\">\n\n  <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <!-- Main Card -->\n        <table width=\"600\" cellspacing=\"0\" cellpadding=\"0\" \n        style=\"background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background:linear-gradient(135deg,#6366f1,#3b82f6); padding:25px; color:white;\">\n              <h1 style=\"margin:0; font-size:22px;\">🚀 Helpdesk AI System</h1>\n              <p style=\"margin:5px 0 0; opacity:0.9;\">New Ticket Created</p>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:25px; color:#1e293b;\">\n\n              <!-- Complaint -->\n              <p style=\"margin:0; font-weight:bold; color:#475569;\">📝 Complaint</p>\n              <div style=\"\n                margin-top:8px;\n                padding:15px;\n                background:#f1f5f9;\n                border-left:5px solid #3b82f6;\n                border-radius:8px;\n                font-size:14px;\">\n                {{$json[\"text\"]}}\n              </div>\n\n              <!-- Info Table -->\n              <table width=\"100%\" style=\"margin-top:20px; font-size:14px;\">\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📂 Category</b><br>\n                    <span style=\"color:#3b82f6; font-weight:bold;\">\n                      {{$json[\"category\"]}}\n                    </span>\n                  </td>\n\n                  <td style=\"width:10px;\"></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📧 Customer</b><br>\n                    <span style=\"color:#334155;\">\n                      {{$json[\"email\"]}}\n                    </span>\n                  </td>\n                </tr>\n\n                <tr><td colspan=\"3\" style=\"height:10px;\"></td></tr>\n\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>👨‍💻 Assigned To</b><br>\n                    <span style=\"color:#6366f1; font-weight:bold;\">\n                      {{$json[\"assigned_to\"]}}\n                    </span>\n                  </td>\n\n                  <td></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>⏰ Timestamp</b><br>\n                    <span style=\"color:#64748b;\">\n                      {{$json[\"timestamp\"]}}\n                    </span>\n                  </td>\n                </tr>\n              </table>\n\n              <!-- Status Badge -->\n              <div style=\"margin-top:20px;\">\n                <span style=\"\n                  background:#22c55e;\n                  color:white;\n                  padding:8px 16px;\n                  border-radius:20px;\n                  font-size:12px;\n                  font-weight:bold;\">\n                  {{$json[\"status\"] | upper}}\n                </span>\n              </div>\n\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#0f172a; color:#94a3b8; padding:15px; text-align:center; font-size:12px;\">\n              © 2026 AI Helpdesk System • Ticket Auto-Generated\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        -544
+      ],
+      "id": "3505029a-691d-498e-b8f9-d754f82f2fca",
+      "name": "Send a message",
+      "webhookId": "920da051-4ca2-49e5-8c55-903dd188c882",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "MAIL2@gmail.com",
+        "subject": "New complaint received:",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#0f172a; font-family:Segoe UI, Arial, sans-serif;\">\n\n  <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <!-- Main Card -->\n        <table width=\"600\" cellspacing=\"0\" cellpadding=\"0\" \n        style=\"background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background:linear-gradient(135deg,#6366f1,#3b82f6); padding:25px; color:white;\">\n              <h1 style=\"margin:0; font-size:22px;\">🚀 Helpdesk AI System</h1>\n              <p style=\"margin:5px 0 0; opacity:0.9;\">New Ticket Created</p>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:25px; color:#1e293b;\">\n\n              <!-- Complaint -->\n              <p style=\"margin:0; font-weight:bold; color:#475569;\">📝 Complaint</p>\n              <div style=\"\n                margin-top:8px;\n                padding:15px;\n                background:#f1f5f9;\n                border-left:5px solid #3b82f6;\n                border-radius:8px;\n                font-size:14px;\">\n                {{$json[\"text\"]}}\n              </div>\n\n              <!-- Info Table -->\n              <table width=\"100%\" style=\"margin-top:20px; font-size:14px;\">\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📂 Category</b><br>\n                    <span style=\"color:#3b82f6; font-weight:bold;\">\n                      {{$json[\"category\"]}}\n                    </span>\n                  </td>\n\n                  <td style=\"width:10px;\"></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📧 Customer</b><br>\n                    <span style=\"color:#334155;\">\n                      {{$json[\"email\"]}}\n                    </span>\n                  </td>\n                </tr>\n\n                <tr><td colspan=\"3\" style=\"height:10px;\"></td></tr>\n\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>👨‍💻 Assigned To</b><br>\n                    <span style=\"color:#6366f1; font-weight:bold;\">\n                      {{$json[\"assigned_to\"]}}\n                    </span>\n                  </td>\n\n                  <td></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>⏰ Timestamp</b><br>\n                    <span style=\"color:#64748b;\">\n                      {{$json[\"timestamp\"]}}\n                    </span>\n                  </td>\n                </tr>\n              </table>\n\n              <!-- Status Badge -->\n              <div style=\"margin-top:20px;\">\n                <span style=\"\n                  background:#22c55e;\n                  color:white;\n                  padding:8px 16px;\n                  border-radius:20px;\n                  font-size:12px;\n                  font-weight:bold;\">\n                  {{$json[\"status\"] | upper}}\n                </span>\n              </div>\n\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#0f172a; color:#94a3b8; padding:15px; text-align:center; font-size:12px;\">\n              © 2026 AI Helpdesk System • Ticket Auto-Generated\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        64
+      ],
+      "id": "9b0ae6b9-ff4f-4c90-96d4-eade8f65b70b",
+      "name": "Send a message1",
+      "webhookId": "2bcb56f9-34ef-4cec-8bdc-d12f48bb579d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "MAIL3@gmail.com",
+        "subject": "New complaint received:",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#0f172a; font-family:Segoe UI, Arial, sans-serif;\">\n\n  <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <!-- Main Card -->\n        <table width=\"600\" cellspacing=\"0\" cellpadding=\"0\" \n        style=\"background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background:linear-gradient(135deg,#6366f1,#3b82f6); padding:25px; color:white;\">\n              <h1 style=\"margin:0; font-size:22px;\">🚀 Helpdesk AI System</h1>\n              <p style=\"margin:5px 0 0; opacity:0.9;\">New Ticket Created</p>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:25px; color:#1e293b;\">\n\n              <!-- Complaint -->\n              <p style=\"margin:0; font-weight:bold; color:#475569;\">📝 Complaint</p>\n              <div style=\"\n                margin-top:8px;\n                padding:15px;\n                background:#f1f5f9;\n                border-left:5px solid #3b82f6;\n                border-radius:8px;\n                font-size:14px;\">\n                {{$json[\"text\"]}}\n              </div>\n\n              <!-- Info Table -->\n              <table width=\"100%\" style=\"margin-top:20px; font-size:14px;\">\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📂 Category</b><br>\n                    <span style=\"color:#3b82f6; font-weight:bold;\">\n                      {{$json[\"category\"]}}\n                    </span>\n                  </td>\n\n                  <td style=\"width:10px;\"></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📧 Customer</b><br>\n                    <span style=\"color:#334155;\">\n                      {{$json[\"email\"]}}\n                    </span>\n                  </td>\n                </tr>\n\n                <tr><td colspan=\"3\" style=\"height:10px;\"></td></tr>\n\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>👨‍💻 Assigned To</b><br>\n                    <span style=\"color:#6366f1; font-weight:bold;\">\n                      {{$json[\"assigned_to\"]}}\n                    </span>\n                  </td>\n\n                  <td></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>⏰ Timestamp</b><br>\n                    <span style=\"color:#64748b;\">\n                      {{$json[\"timestamp\"]}}\n                    </span>\n                  </td>\n                </tr>\n              </table>\n\n              <!-- Status Badge -->\n              <div style=\"margin-top:20px;\">\n                <span style=\"\n                  background:#22c55e;\n                  color:white;\n                  padding:8px 16px;\n                  border-radius:20px;\n                  font-size:12px;\n                  font-weight:bold;\">\n                  {{$json[\"status\"] | upper}}\n                </span>\n              </div>\n\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#0f172a; color:#94a3b8; padding:15px; text-align:center; font-size:12px;\">\n              © 2026 AI Helpdesk System • Ticket Auto-Generated\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1456,
+        592
+      ],
+      "id": "33e56afb-72c6-46d9-bc90-325325ee6d50",
+      "name": "Send a message2",
+      "webhookId": "5fd0acdc-83e6-4322-86d6-2d6cd158b287",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "MAIL4@gmail.com",
+        "subject": "New complaint received:",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#0f172a; font-family:Segoe UI, Arial, sans-serif;\">\n\n  <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <!-- Main Card -->\n        <table width=\"600\" cellspacing=\"0\" cellpadding=\"0\" \n        style=\"background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2);\">\n\n          <!-- Header -->\n          <tr>\n            <td style=\"background:linear-gradient(135deg,#6366f1,#3b82f6); padding:25px; color:white;\">\n              <h1 style=\"margin:0; font-size:22px;\">🚀 Helpdesk AI System</h1>\n              <p style=\"margin:5px 0 0; opacity:0.9;\">New Ticket Created</p>\n            </td>\n          </tr>\n\n          <!-- Body -->\n          <tr>\n            <td style=\"padding:25px; color:#1e293b;\">\n\n              <!-- Complaint -->\n              <p style=\"margin:0; font-weight:bold; color:#475569;\">📝 Complaint</p>\n              <div style=\"\n                margin-top:8px;\n                padding:15px;\n                background:#f1f5f9;\n                border-left:5px solid #3b82f6;\n                border-radius:8px;\n                font-size:14px;\">\n                {{$json[\"text\"]}}\n              </div>\n\n              <!-- Info Table -->\n              <table width=\"100%\" style=\"margin-top:20px; font-size:14px;\">\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📂 Category</b><br>\n                    <span style=\"color:#3b82f6; font-weight:bold;\">\n                      {{$json[\"category\"]}}\n                    </span>\n                  </td>\n\n                  <td style=\"width:10px;\"></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>📧 Customer</b><br>\n                    <span style=\"color:#334155;\">\n                      {{$json[\"email\"]}}\n                    </span>\n                  </td>\n                </tr>\n\n                <tr><td colspan=\"3\" style=\"height:10px;\"></td></tr>\n\n                <tr>\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>👨‍💻 Assigned To</b><br>\n                    <span style=\"color:#6366f1; font-weight:bold;\">\n                      {{$json[\"assigned_to\"]}}\n                    </span>\n                  </td>\n\n                  <td></td>\n\n                  <td style=\"padding:10px; background:#f8fafc; border-radius:8px;\">\n                    <b>⏰ Timestamp</b><br>\n                    <span style=\"color:#64748b;\">\n                      {{$json[\"timestamp\"]}}\n                    </span>\n                  </td>\n                </tr>\n              </table>\n\n              <!-- Status Badge -->\n              <div style=\"margin-top:20px;\">\n                <span style=\"\n                  background:#22c55e;\n                  color:white;\n                  padding:8px 16px;\n                  border-radius:20px;\n                  font-size:12px;\n                  font-weight:bold;\">\n                  {{$json[\"status\"] | upper}}\n                </span>\n              </div>\n\n            </td>\n          </tr>\n\n          <!-- Footer -->\n          <tr>\n            <td style=\"background:#0f172a; color:#94a3b8; padding:15px; text-align:center; font-size:12px;\">\n              © 2026 AI Helpdesk System • Ticket Auto-Generated\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1296,
+        1088
+      ],
+      "id": "3b6a0e80-3b10-4ecc-82cc-64708f78dec0",
+      "name": "Send a message3",
+      "webhookId": "7afa9979-e7c5-41fd-aa79-c91c40990790",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        96
+      ],
+      "id": "0f7df9d9-defc-4e28-9f5a-1e889d57e526",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4069dc7-86af-4a84-8068-c96820537f70",
+              "name": "text",
+              "value": "={{$json[\"text\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "c4f205f3-382f-4a18-ab8d-2244f0f2e415",
+              "name": "category",
+              "value": "={{$json[\"category\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "5c1e97c7-f440-4279-881a-0e948ce52de8",
+              "name": "timestamp",
+              "value": "={{$now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss')}}",
+              "type": "string"
+            },
+            {
+              "id": "873b1d9b-ac32-41d8-a09e-8cf7006ad248",
+              "name": "email",
+              "value": "={{$json[\"email\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "d0e43293-6bfe-41a6-ae4b-4181b40fb036",
+              "name": "status",
+              "value": "open",
+              "type": "string"
+            },
+            {
+              "id": "e3153714-5f16-430e-ad7d-8f06b19e8024",
+              "name": "assigned_to",
+              "value": "network_team",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        -384
+      ],
+      "id": "6f642708-a8c7-469c-a88a-61f002c157f6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "text",
+              "value": "={{$json[\"text\"]}}"
+            },
+            {
+              "column": "category",
+              "value": "={{$json[\"category\"]}}"
+            },
+            {
+              "column": "timestamp",
+              "value": "={{$json[\"timestamp\"]}}"
+            },
+            {
+              "column": "email",
+              "value": "={{$json[\"email\"]}}"
+            },
+            {
+              "column": "status",
+              "value": "open"
+            },
+            {
+              "column": "assigned_to",
+              "value": "={{$json[\"assigned_to\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1344,
+        -336
+      ],
+      "id": "ab12b640-7598-4279-9c6a-149c25366a59",
+      "name": "Insert rows in a table4",
+      "credentials": {
+        "mySql": {
+          "id": "oara3J49dthlRC0P",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a77ac196-cc37-4369-a225-dfb2e0fd01ee",
+              "name": "text",
+              "value": "={{$json[\"textPlain\"] || $json[\"snippet\"] || $json[\"subject\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "45bf94f7-0ab1-42d4-8682-f141e3d73b3e",
+              "name": "email",
+              "value": "={{$json[\"From\"].match(/<(.+?)>/)?.[1] || $json[\"From\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        -32
+      ],
+      "id": "c9061bcd-4785-4f71-b30b-efddc1131af0",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        560,
+        112
+      ],
+      "id": "63215c11-0f51-464d-bbbc-c0289777b798",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{$node[\"Gmail Trigger\"].json[\"id\"]}}",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#020617; font-family:Segoe UI, Arial;\">\n\n  <table width=\"100%\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table width=\"600\" style=\"background:#0f172a; border-radius:16px; color:white; padding:30px;\">\n\n          <tr>\n            <td>\n\n              <h2 style=\"color:#38bdf8;\">✅ Your Ticket Has Been Created</h2>\n\n              <p style=\"color:#cbd5f5;\">\n                Hi there 👋, we’ve successfully received your request.\n              </p>\n\n              <div style=\"\n                margin:20px 0;\n                padding:15px;\n                background:#1e293b;\n                border-radius:10px;\n                border:1px solid #334155;\">\n                {{$json[\"text\"] || $json[\"snippet\"]}}\n              </div>\n\n              <p style=\"color:#94a3b8;\">\n                📂 Category: <b>{{$json[\"category\"]}}</b><br>\n                🔧 Assigned Team: <b>{{$json[\"assigned_to\"]}}</b><br>\n                📊 Status: <b style=\"color:#22c55e;\">{{$json[\"status\"]}}</b>\n              </p>\n\n              <hr style=\"border:none; border-top:1px solid #334155; margin:20px 0;\">\n\n              <p style=\"font-size:12px; color:#64748b;\">\n                Our team will reach out shortly. Please do not reply to this automated email.\n              </p>\n\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        -144
+      ],
+      "id": "17a3effa-f6f0-4d58-b833-6687669effca",
+      "name": "Reply to a message",
+      "webhookId": "b3a61c82-96be-4163-af71-25e24632d0b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{$node[\"Gmail Trigger\"].json[\"id\"]}}",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#020617; font-family:Segoe UI, Arial;\">\n\n  <table width=\"100%\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table width=\"600\" style=\"background:#0f172a; border-radius:16px; color:white; padding:30px;\">\n\n          <tr>\n            <td>\n\n              <h2 style=\"color:#38bdf8;\">✅ Your Ticket Has Been Created</h2>\n\n              <p style=\"color:#cbd5f5;\">\n                Hi there 👋, we’ve successfully received your request.\n              </p>\n\n              <div style=\"\n                margin:20px 0;\n                padding:15px;\n                background:#1e293b;\n                border-radius:10px;\n                border:1px solid #334155;\">\n                {{$json[\"text\"] || $json[\"snippet\"]}}\n              </div>\n\n              <p style=\"color:#94a3b8;\">\n                📂 Category: <b>{{$json[\"category\"]}}</b><br>\n                🔧 Assigned Team: <b>{{$json[\"assigned_to\"]}}</b><br>\n                📊 Status: <b style=\"color:#22c55e;\">{{$json[\"status\"]}}</b>\n              </p>\n\n              <hr style=\"border:none; border-top:1px solid #334155; margin:20px 0;\">\n\n              <p style=\"font-size:12px; color:#64748b;\">\n                Our team will reach out shortly. Please do not reply to this automated email.\n              </p>\n\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        224
+      ],
+      "id": "875211be-50b7-4e06-87f3-9fa635f9dee1",
+      "name": "Reply to a message1",
+      "webhookId": "b3a61c82-96be-4163-af71-25e24632d0b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{$node[\"Gmail Trigger\"].json[\"id\"]}}",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#020617; font-family:Segoe UI, Arial;\">\n\n  <table width=\"100%\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table width=\"600\" style=\"background:#0f172a; border-radius:16px; color:white; padding:30px;\">\n\n          <tr>\n            <td>\n\n              <h2 style=\"color:#38bdf8;\">✅ Your Ticket Has Been Created</h2>\n\n              <p style=\"color:#cbd5f5;\">\n                Hi there 👋, we’ve successfully received your request.\n              </p>\n\n              <div style=\"\n                margin:20px 0;\n                padding:15px;\n                background:#1e293b;\n                border-radius:10px;\n                border:1px solid #334155;\">\n                {{$json[\"text\"] || $json[\"snippet\"]}}\n              </div>\n\n              <p style=\"color:#94a3b8;\">\n                📂 Category: <b>{{$json[\"category\"]}}</b><br>\n                🔧 Assigned Team: <b>{{$json[\"assigned_to\"]}}</b><br>\n                📊 Status: <b style=\"color:#22c55e;\">{{$json[\"status\"]}}</b>\n              </p>\n\n              <hr style=\"border:none; border-top:1px solid #334155; margin:20px 0;\">\n\n              <p style=\"font-size:12px; color:#64748b;\">\n                Our team will reach out shortly. Please do not reply to this automated email.\n              </p>\n\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1664,
+        736
+      ],
+      "id": "928da4d4-687b-4d67-a957-b3c184b1e32d",
+      "name": "Reply to a message2",
+      "webhookId": "b3a61c82-96be-4163-af71-25e24632d0b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{$node[\"Gmail Trigger\"].json[\"id\"]}}",
+        "message": "=<!DOCTYPE html>\n<html>\n<body style=\"margin:0; padding:0; background:#020617; font-family:Segoe UI, Arial;\">\n\n  <table width=\"100%\" style=\"padding:40px 0;\">\n    <tr>\n      <td align=\"center\">\n\n        <table width=\"600\" style=\"background:#0f172a; border-radius:16px; color:white; padding:30px;\">\n\n          <tr>\n            <td>\n\n              <h2 style=\"color:#38bdf8;\">✅ Your Ticket Has Been Created</h2>\n\n              <p style=\"color:#cbd5f5;\">\n                Hi there 👋, we’ve successfully received your request.\n              </p>\n\n              <div style=\"\n                margin:20px 0;\n                padding:15px;\n                background:#1e293b;\n                border-radius:10px;\n                border:1px solid #334155;\">\n                {{$json[\"text\"] || $json[\"snippet\"]}}\n              </div>\n\n              <p style=\"color:#94a3b8;\">\n                📂 Category: <b>{{$json[\"category\"]}}</b><br>\n                🔧 Assigned Team: <b>{{$json[\"assigned_to\"]}}</b><br>\n                📊 Status: <b style=\"color:#22c55e;\">{{$json[\"status\"]}}</b>\n              </p>\n\n              <hr style=\"border:none; border-top:1px solid #334155; margin:20px 0;\">\n\n              <p style=\"font-size:12px; color:#64748b;\">\n                Our team will reach out shortly. Please do not reply to this automated email.\n              </p>\n\n            </td>\n          </tr>\n\n        </table>\n\n      </td>\n    </tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1520,
+        1216
+      ],
+      "id": "bbcbf933-eaa9-4255-90a2-9dc005db6b32",
+      "name": "Reply to a message3",
+      "webhookId": "b3a61c82-96be-4163-af71-25e24632d0b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DIn6tV0VHSSWVFUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4069dc7-86af-4a84-8068-c96820537f70",
+              "name": "text",
+              "value": "={{$json[\"text\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "c4f205f3-382f-4a18-ab8d-2244f0f2e415",
+              "name": "category",
+              "value": "={{$json[\"category\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "5c1e97c7-f440-4279-881a-0e948ce52de8",
+              "name": "timestamp",
+              "value": "={{$now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss')}}",
+              "type": "string"
+            },
+            {
+              "id": "873b1d9b-ac32-41d8-a09e-8cf7006ad248",
+              "name": "email",
+              "value": "={{$json[\"email\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "d0e43293-6bfe-41a6-ae4b-4181b40fb036",
+              "name": "status",
+              "value": "open",
+              "type": "string"
+            },
+            {
+              "id": "e3153714-5f16-430e-ad7d-8f06b19e8024",
+              "name": "assigned_to",
+              "value": "hardware_team",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        992,
+        112
+      ],
+      "id": "26dfa3ef-bf01-4eae-bc53-10a002bb6596",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4069dc7-86af-4a84-8068-c96820537f70",
+              "name": "text",
+              "value": "={{$json[\"text\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "c4f205f3-382f-4a18-ab8d-2244f0f2e415",
+              "name": "category",
+              "value": "={{$json[\"category\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "5c1e97c7-f440-4279-881a-0e948ce52de8",
+              "name": "timestamp",
+              "value": "={{$now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss')}}",
+              "type": "string"
+            },
+            {
+              "id": "873b1d9b-ac32-41d8-a09e-8cf7006ad248",
+              "name": "email",
+              "value": "={{$json[\"email\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "d0e43293-6bfe-41a6-ae4b-4181b40fb036",
+              "name": "status",
+              "value": "open",
+              "type": "string"
+            },
+            {
+              "id": "e3153714-5f16-430e-ad7d-8f06b19e8024",
+              "name": "assigned_to",
+              "value": "software_team",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        512
+      ],
+      "id": "57debac9-3ded-40b8-93f6-77f660509fbd",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d4069dc7-86af-4a84-8068-c96820537f70",
+              "name": "text",
+              "value": "={{$json[\"text\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "c4f205f3-382f-4a18-ab8d-2244f0f2e415",
+              "name": "category",
+              "value": "={{$json[\"category\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "5c1e97c7-f440-4279-881a-0e948ce52de8",
+              "name": "timestamp",
+              "value": "={{$now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss')}}",
+              "type": "string"
+            },
+            {
+              "id": "873b1d9b-ac32-41d8-a09e-8cf7006ad248",
+              "name": "email",
+              "value": "={{$json[\"email\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "d0e43293-6bfe-41a6-ae4b-4181b40fb036",
+              "name": "status",
+              "value": "open",
+              "type": "string"
+            },
+            {
+              "id": "e3153714-5f16-430e-ad7d-8f06b19e8024",
+              "name": "assigned_to",
+              "value": "access_team",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        960
+      ],
+      "id": "082c5f56-de09-4b2a-a137-3b39b041a8ac",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "text",
+              "value": "={{$json[\"text\"]}}"
+            },
+            {
+              "column": "category",
+              "value": "={{$json[\"category\"]}}"
+            },
+            {
+              "column": "timestamp",
+              "value": "={{$json[\"timestamp\"]}}"
+            },
+            {
+              "column": "email",
+              "value": "={{$json[\"email\"]}}"
+            },
+            {
+              "column": "status",
+              "value": "open"
+            },
+            {
+              "column": "assigned_to",
+              "value": "={{$json[\"assigned_to\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1344,
+        336
+      ],
+      "id": "aba5e448-11e7-4934-8493-944d713edf17",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "oara3J49dthlRC0P",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "text",
+              "value": "={{$json[\"text\"]}}"
+            },
+            {
+              "column": "category",
+              "value": "={{$json[\"category\"]}}"
+            },
+            {
+              "column": "timestamp",
+              "value": "={{$json[\"timestamp\"]}}"
+            },
+            {
+              "column": "email",
+              "value": "={{$json[\"email\"]}}"
+            },
+            {
+              "column": "status",
+              "value": "open"
+            },
+            {
+              "column": "assigned_to",
+              "value": "={{$json[\"assigned_to\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1232,
+        768
+      ],
+      "id": "26e7e067-ca5a-4d71-b712-5301218ce4d3",
+      "name": "Insert rows in a table5",
+      "credentials": {
+        "mySql": {
+          "id": "oara3J49dthlRC0P",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "text",
+              "value": "={{$json[\"text\"]}}"
+            },
+            {
+              "column": "category",
+              "value": "={{$json[\"category\"]}}"
+            },
+            {
+              "column": "timestamp",
+              "value": "={{$json[\"timestamp\"]}}"
+            },
+            {
+              "column": "email",
+              "value": "={{$json[\"email\"]}}"
+            },
+            {
+              "column": "status",
+              "value": "open"
+            },
+            {
+              "column": "assigned_to",
+              "value": "={{$json[\"assigned_to\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1056,
+        1296
+      ],
+      "id": "c73d5b61-9568-48b5-ac0a-7a8a6767f032",
+      "name": "Insert rows in a table6",
+      "credentials": {
+        "mySql": {
+          "id": "oara3J49dthlRC0P",
+          "name": "MySQL account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        []
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        []
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        []
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert rows in a table4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert rows in a table5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reply to a message3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert rows in a table6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "availableInMCP": false
+  },
+  "versionId": "dbd15e15-c1f0-4d21-bad2-2da823b40ad1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4d6de4bb1db8146e08ce4479e2015fa8bfa655c54409cb15137fb56ee94a8ff0"
+  },
+  "id": "qgYrFkKS8XdKGxr2",
+  "tags": []
+}
