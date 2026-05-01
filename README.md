@@ -307,7 +307,7 @@ Connect Account
 # 🧪 Step 7 — Add your gmails (4 diffrent gmail accounts)
 
 
-Provide 4 diffrent g mail accounts in the respective gmail nodes
+Provide 4 diffrent g-mail accounts in the respective gmail nodes
 
 ---
 
