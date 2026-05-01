@@ -335,7 +335,7 @@ Download & install MySQL if not already installed:
 
 ## 🔑 Step 2 — Create Database
 
-Login to MySQL:
+Login to MySQL: (runs at 3306 port )
 
 ```bash
 mysql -u root -p
