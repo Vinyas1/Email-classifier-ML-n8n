@@ -51,15 +51,18 @@ And n8n start in a second terminal.
 - unclassified → Groq could not determine category (rare)
 
 ## File Structure
+
+```text
 email-classifier/
 ├── dataset/
 │   └── tickets.csv
 ├── django_project/
-│   ├── django_project/     ← Django settings, urls
+│   ├── django_project/     # Django settings, urls
 │   ├── tickets/
-│   │   ├── ml_model.py     ← Groq classifier (only file changed)
-│   │   ├── views.py        ← unchanged
+│   │   ├── ml_model.py     # Groq classifier (only file changed)
+│   │   ├── views.py        # unchanged
 │   │   └── ...
 │   └── manage.py
-├── n8n workflow.json       ← import into n8n
+├── n8n workflow.json       # import into n8n
 └── requirements.txt
+```
